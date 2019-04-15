@@ -1,20 +1,93 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="row justify-content-md-center">
+  <div class="col-lg-12">
+  <h1 class="title"> User Form </h1>
+  </div>
+  <div class="col-lg-6 col-md-8 col-sm-8">
+    <form [formGroup]="UserForm" (ngSubmit)="OnSubmit(UserForm.value)" #AccountContactForm>
+          <div class="form-group">
+            <label>Full Name <span style="color: #f44242">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter your full name" formControlName="FullName" capitalize />
+            <div class="alert" *ngIf="!UserForm.controls['FullName'].valid && (UserForm.controls['FullName'].touched)">
+              <div [hidden]="!UserForm.controls['FullName'].errors.required">
+                Full name is required.
+              </div>
+              <div [hidden]="!UserForm.controls['FullName'].errors.minlength">
+                Your name must have at least 3 characters length.
+              </div>
+              <div [hidden]="!UserForm.controls['FullName'].errors.pattern">
+                  Your name can't content special characters.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Date Of Birth <span style="color: #f44242">*</span></label> <br/>
+            <mat-form-field>
+              <input class="form-control" formControlName="Birthday" matInput [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Email <span style="color: #f44242">*</span></label>
+            <input type="text" class="form-control" placeholder="Enter email" formControlName="Email">
+            <div class="alert" *ngIf="!UserForm.controls['Email'].valid && (UserForm.controls['Email'].touched)">
+              <div [hidden]="!UserForm.controls['Email'].errors.required">
+                Email required.
+              </div>
+              <div [hidden]="!UserForm.controls['Email'].errors.pattern">
+                  Email not in valid format.
+                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description <span style="color: #f44242">*</span></label>
+            <textarea type="text" class="form-control" placeholder="Enter Description" formControlName="Description"> </textarea>
+            <div class="alert" *ngIf="!UserForm.controls['Description'].valid && (UserForm.controls['Description'].touched)">
+              <div [hidden]="!UserForm.controls['Description'].errors.required">
+                Description required.
+              </div>
+              <div [hidden]="!UserForm.controls['Description'].errors.minlength">
+                Description mut be at least 10 characters.
+              </div>
+              <div [hidden]="!UserForm.controls['Description'].errors.maxlength">
+                Description can't exceed more then 100 characters.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mobile <span style="color: #f44242">*</span></label>
+            <input type="text" id="mobile_number" class="form-control" maxlength="10" placeholder="Enter mobile number" formControlName="Mobile">
+            <div class="alert" *ngIf="!UserForm.controls['Mobile'].valid && (UserForm.controls['Mobile'].touched)">
+              <div [hidden]="!UserForm.controls['Mobile'].errors.required">
+                Mobile number required.
+              </div>
+              <div [hidden]="!UserForm.controls['Mobile'].errors.minlength">
+                Mobile number not valid.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label">User Image</label>
+            <br>
+            <input type="file" class="dropify" formControlName="UserImage" #UserImage (change)="preview(UserImage.files)">
+            <br>
+            <small>Please upload user image less than 2.0 MB (.jpg, .png, .jpeg, .bmp)</small>
+            <img [src]="ImageUrl" height="200" *ngIf="ImageUrl">
+            <div class="alert" *ngIf="!UserForm.controls['UserImage'].valid && (UserForm.controls['UserImage'].touched)">
+              <div [hidden]="!UserForm.controls['UserImage'].errors">
+                User image required.
+              </div>
+            </div>
+          </div>
+      <br>
+      <div class="row">
+        <div class="col-lg-6">
+          <input type="submit" class="btn btn-primary button" value="Submit" [disabled]="!UserForm.valid">
+          <input type="submit" class="btn btn-primary button" value="Cancel" [disabled]="!UserForm.touched" (click)="cancelForm()">
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
